@@ -1,0 +1,185 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Planntap</title>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <!-- Compiled and minified CSS -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+      <!-- Compiled and minified JavaScript -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <!--Import Google Icon Font-->
+      <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css'%}">
+			<link rel="stylesheet" type="text/css" href="{% static 'css/index.css'%}">
+
+
+<style>
+   body{
+
+    background: white url("{% static 'Mainapp/images/pastel_sky.jpg' %}")
+    no-repeat;
+    background-size: cover;
+
+
+  }
+
+</style>
+</head>
+
+
+
+<body>
+	<nav class="navbar purple lighten-4 white-text">
+
+	  <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Planntap</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+				{% if user.is_authenticated %}
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li><a href="{% url 'add diary' %}">Add Diary</a></li>
+				<li><a href="{% url 'maps' %}">Maps</a></li>
+				<li><a href="{% url 'twitter' %}">Twitter</a></li>
+				<li><a href="{% url 'facebook' %}">Facebook</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+      </ul>
+				{% else %}
+				<li><a href="{% url 'register' %}">Register</a></li>
+        <li><a href="{% url 'login' %}">Login</a></li>
+				{% endif %}
+    </div>
+  </nav>
+
+	<br>
+	{% block content %}
+  <div class = "background"> </div>
+	{% endblock %}
+	<br>
+
+
+	<script>
+
+
+    $(function(){
+      $.ajax({
+        url: "{% url 'getDiary' %}",
+        success: function(data){
+					console.log(data)
+					if (data.diaryEntry.length>0){
+
+
+          for(var i= 0; i< data.diaryEntry.length; i++){
+              // $(".diaryList").append("<li class='getDiary'id=" + data.diaryEntry[i].id + "> <div><h3>" + data.diaryEntry[i].Eventname + "</h3><p>" + data.diaryEntry[i].desc + "</p></div>"
+              //  + "<button class='DetailButton' id=" + data.diaryEntry[i].id + "> Details </button>"
+              //  + "<button class='UpdateButton' id=" + data.diaryEntry[i].id + "> Update </button>"
+              //  + "<button class='DeleteButton' id=" + data.diaryEntry[i].id + "> Delete </button></li><br><br><br><br><br><br><br><br><br>")
+							console.log(data.diaryEntry[i] )
+							$(".diaryList").append("<div class='card sticky-action medium' id='" + data.diaryEntry[i].fields.id +"'>"
+                + "<div class='card-image waves-effect waves-block waves-light'><img class='activator' src='" + data.diaryEntry[i].fields.Image + "'></div>"
+                + "<div class='card-content'><span class='card-title activator grey-text text-darken-4'>" + data.diaryEntry[i].fields.Eventname + "<i class='material-icons right'>More info</i></span></div>"
+                + "<div class='card-action'><a class='DeleteButton btn purple lighten-4 right' id=" + data.diaryEntry[i].fields.id + "> Delete </a><a href='#update_Diary'class='UpdateButton btn purple lighten-4' id=" + data.diaryEntry[i].id + "> Update </a></div>"
+                + "<div class='card-reveal'><span class='card-title grey-text text-darken-4'>" + data.diaryEntry[i].fields.Eventname + "<i class='material-icons right'>close</i></span>"
+                + "<p><br><div class='cardSubheadings'><h6 style='display:inline; color: #d9b3ff;'>Description: </h6>" + data.diaryEntry[i].fields.desc
+								+ "</div><br><div class='cardSubheadings'><h6 style='display:inline; color: #d9b3ff;'>Location: </h6>" + data.diaryEntry[i].fields.Location
+								+ "</div><br><div class='cardSubheadings'><h6 style='display:inline; color: #d9b3ff;'>Date: </h6>" + data.diaryEntry[i].fields.Date
+								+ "</div><br><div class='cardSubheadings'><h6 style='display:inline; color: #d9b3ff;'>Rating: </h6>" + data.diaryEntry[i].fields.Rating
+								+ "</div><br><div class='cardSubheadings'><h6 style='display:inline; color: #d9b3ff;'>Review: </h6>" + data.diaryEntry[i].fields.Review + "</div></p></div></div>")
+          }
+				}
+
+				else{
+					$(".diaryList").append("<p>Please Add a Diary Entry to create a post</p>")
+				}
+
+        $('.UpdateButton').click(function(){
+					var objDiv = document.getElementById("update_Diary");
+					objDiv.scrollTop = objDiv.scrollHeight;
+
+              var iddd = $(this).attr('id')
+              $(function(){
+                  for(var k = 0 ; k<data.diaryEntry.length; k++){
+                     if(iddd==data.diaryEntry[k].id){
+                       list_id = k
+                       eventname = data.diaryEntry[k].Eventname
+                       desc = data.diaryEntry[k].desc
+                       local = data.diaryEntry[k].Location
+											 date = data.diaryEntry[k].Date
+											 rating = data.diaryEntry[k].Rating
+											 review = data.diaryEntry[k].Review
+                     }
+                  }
+
+
+              })
+
+
+              $('#update_event_name').val(eventname)
+              $('#update_desc').val(desc)
+              $('#update_Location').val(local)
+							$('#update_Date').val(date)
+							$('#update_Rating').val(rating)
+							$('#update_Review').val(review)
+
+
+              $('#UpdateButtonSubmit').click(function(){
+
+                  updatedDiary = $('#update_Diary').serializeArray()
+                  updatedDiary.push({name: 'id', value: data.diaryEntry[list_id].id})
+                  console.log(updatedDiary)
+                  $.ajax({
+                      url: "{% url 'UpdateDiary' %}",
+                      type: "PUT",
+                      data: updatedDiary,
+                      dataType: "json",
+                      beforeSend: function (xhr) {
+                      xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token}}');
+                      },
+                      success: function(data){
+                        alert('Yayy, you have updated ');
+												// document.documentElement.scrollTop = 0;
+                      }
+                  })
+              })//END BUTTON SUBMIT
+        })//END UPDATE BUTTON
+
+        $('.DeleteButton').click(function(){
+      console.log($(this).attr("id"))
+      console.log("hi imhere ")
+					var confirmDelete = confirm("Are you sure you want to delete?")
+					if (confirmDelete == true){
+
+      $.ajax({
+              url: "{% url 'DeleteDiary' %}",
+              data: $(this).attr("id"),
+              type: 'DELETE',
+              dataType: "json",
+              beforeSend: function (xhr) {
+              xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token}}');
+              },
+              success: function(data){
+                  console.log("Data");
+                   console.log(data)
+                   $('#'+data.values+'').remove()
+              }
+      })
+		}
+    })//END DELETE
+      }//END SUCCESS
+      })//END GET
+
+    })
+
+
+  </script>
+
+
+</body>
+
+<script type="text/javascript" src="js/materialize.min.js"></script>
+</html>

@@ -1,0 +1,20 @@
+{% extends "Mainapp2/base.html" %}
+
+{% block content %}
+<div class="container">
+<div class="LoginContainer" style = margin: 50px>
+
+<h1>Login</h1>
+
+     <h3>Please enter your details to login</h3>
+     <form role="form" action = "{% url 'login' %}" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+          <button class="loginButton btn purple lighten-3" >Log in</button>
+      </form>
+      <br>
+      <a href="/password-reset/"> Forgotten Password? </a>
+</div>
+
+</div>
+{% endblock %}

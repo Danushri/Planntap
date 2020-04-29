@@ -1,0 +1,88 @@
+<!-- <style>
+
+
+.navbar-brand {
+  background-color: #dddddd;
+
+}
+
+.getDiary{
+  padding: 20px;
+
+}
+
+.diaryList{
+  margin: 5px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #dddddd;
+}
+
+li {
+  float: left;check inline / style prrity
+  display: inline;
+}
+
+li a {
+display: block;
+padding: 8px;
+background-color: #dddddd;
+}
+li form {
+display: block;
+padding: 8px;
+background-color: #dddddd;
+}
+
+li a:hover {
+background-color: #111;
+}
+
+.active {
+background-color: #111;
+}
+
+.DetailButton{
+ margin: 10px;
+}
+
+.UpdateButton{
+margin: 10px;
+}
+
+.DeleteButton{
+margin: 10px;
+}
+
+.container4{
+position: relative;
+grid-area: cont4;
+border: 2px;
+border-width: 2px;
+border-color: grey;
+}
+
+body{
+
+background: white url("{% static 'Mainapp/images/pastel_sky.jpg' %}")
+no-repeat;
+
+}
+
+.background{
+background-color:#6495ED;
+}
+
+h3{
+color: #6495ED;
+}
+
+
+
+
+</style> -->

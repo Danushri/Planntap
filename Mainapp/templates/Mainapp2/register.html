@@ -1,0 +1,16 @@
+{% extends "Mainapp2/base.html" %}
+
+{% block content %}
+<div class="container">
+  <h1> Register Here >.< </h1>
+  <br>
+
+  <form method="post">
+    {%csrf_token%}
+    {{reg_form.as_p}}
+    <button class="RegButton" type = "submit" style= "background-color: #dddddd border-style: solid;">Register Me</button>
+  </form>
+
+</div>
+
+{% endblock %}

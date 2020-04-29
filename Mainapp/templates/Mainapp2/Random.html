@@ -1,0 +1,68 @@
+{% extends "Mainapp2/base.html" %}
+
+{% block content %}
+<!-- <script>
+  var service = new google.maps.places.PlaceService(map);
+  var request = {
+    location: new google.maps.LatLng(-33.8736510, 151.20688960),
+    radius: 500
+
+  };
+
+  service.search(request, function(results){
+    console.log(results.length);
+    for (var i=0; i<results.length;i++){
+      console.log(results[i].name, results [i].types)
+    }
+  });
+</script> -->
+<script>
+
+$(document).on("click", "#RandomPlaceButton", function(event){
+  console.log('clicked')
+  $.ajax({
+    url: "{% url 'RandomButton' %}",
+    success: function(data){
+      console.log(data)
+      console.log(data.place.photos[0])
+      // $('#heading').html("<h1>" + data.name + "</h1><br>")
+      // $("#MapIFrame").html("<iframe width='100%' height='450' frameborder='0' style='border:0'"
+      // + "src='https://www.google.com/maps/embed/v1/search?key=AIzaSyASprX-jzfE67JZ3KLVKfxUCQfIjyjQoIw&q="
+      // + data.name + "' allowfullscreen></iframe>")
+      $('#heading').html("<h1>" + data.place.name + "</h1><br>")
+      $("#MapIFrame").html("<iframe width='100%' height='450' frameborder='0' style='border:0'"
+      + "src='https://www.google.com/maps/embed/v1/place?key=AIzaSyDVIg0PrTd-hTsekxxzTTAB3AxIdRSOn4o&q=place_id:"
+      + data.place.place_id + "' allowfullscreen></iframe>")
+      $('#body').html('<p>' + data.place.rating + '</p><img src="' + data.place.icon + '"></img>'
+      + '<img src="https://maps.googleapis.com/maps/api/place/photo?photoreference=' + data.place.photos[0].photo_reference+ '&key=AIzaSyASprX-jzfE67JZ3KLVKfxUCQfIjyjQoIw&maxheight=1000&maxwidth=600" </img>')
+      
+
+    }
+  })
+  })//END
+
+</script>
+<style>
+
+
+</style>
+<div class="container">
+
+  <h1> Randomiser >.< </h1>
+  <br>
+  <button id="RandomPlaceButton" class = "btn purple lighten-3">FIND ME A PLACE TO GO</button>
+  <br>
+  <br>
+  <div id="heading"></div>
+<div id="MapIFrame">
+
+</div>
+<div id="body">
+
+</div>
+
+
+
+</div>
+
+{% endblock %}

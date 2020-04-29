@@ -1,0 +1,25 @@
+{% extends "Mainapp2/base.html" %}
+
+{% block content %}
+
+
+<div class="container">
+
+<div class="TwitterContainer" style = margin: 50px>
+
+<h1>Twitter</h1>
+
+
+
+<div class="container">
+<h3> @Planntap mentions: </h3>
+
+{% for i in top20 %}
+
+  <blockquote class="twitter-tweet"><a href="https://twitter.com/Planntap/status/{{i.id}}&?ref_src=twsrc%5Etfw"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+{% endfor %}
+</div>
+</div>
+</div>
+{% endblock %}

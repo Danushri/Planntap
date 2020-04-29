@@ -1,0 +1,164 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Planntap</title>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <!-- Compiled and minified CSS -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+      <!-- Compiled and minified JavaScript -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      <!--Import Google Icon Font-->
+      <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css'%}">
+
+
+<style>
+   body{
+
+    background: white url("{% static 'Mainapp/images/pastel_sky.jpg' %}")
+    no-repeat;
+    background-size: cover;
+
+  }
+</style>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-light grey lighten-3 black-text">
+  <div class="container-fluid">
+  <a class="navbar-brand" href="{% url 'index' %}">Planntap </a>
+  <!-- <img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" alt=""> (replace 'Navbar'with image)-->
+
+<ul class="navbar-nav ml-auto">
+
+  <div class="nav navbar-nav flow-text">
+    {% if user.is_authenticated %}
+    <li><a class="nav-item nav-link active" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a></li>
+    <li><a class="nav-item nav-link" href="{% url 'add diary' %}">Diary</a></li>
+    <li><a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a></li>
+    <ul class="nav navbar-nav navbar-right">
+    <li><a class="right nav-item" href="#">Tutorial</a></li>
+    </ul>
+    {% else %}
+    <li><a class="nav-item nav-link" href="{% url 'register' %}">Register</a></li>
+    <li><a class="nav-item nav-link" href="{% url 'login' %}">Login</a></li>
+    {% endif %}
+    <li><form class="form-inline">
+      <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0 purple lighten-4" type="submit">Search</button> -->
+    </form></li>
+
+
+
+
+    </div>
+
+</ul>
+</div>
+</nav>
+
+	<br>
+	{% block content %}
+  <div class = "background"> </div>
+	{% endblock %}
+	<br>
+  <script>
+
+
+    $(function(){
+      $.ajax({
+        url: "{% url 'getDiary' %}",
+        success: function(data){
+          for(var i= 0; i< data.diaryEntry.length; i++){
+            console.log(data);
+              // $(".diaryList").append("<li class='getDiary'id=" + data.diaryEntry[i].id + "> <div><h3>" + data.diaryEntry[i].Eventname + "</h3><p>" + data.diaryEntry[i].desc + "</p></div>"
+              //  + "<button class='DetailButton' id=" + data.diaryEntry[i].id + "> Details </button>"
+              //  + "<button class='UpdateButton' id=" + data.diaryEntry[i].id + "> Update </button>"
+              //  + "<button class='DeleteButton' id=" + data.diaryEntry[i].id + "> Delete </button></li><br><br><br><br><br><br><br><br><br>")
+              $(".diaryList").append("<div class='card sticky-action medium' id='" + data.diaryEntry[i].id +"'>"
+                + "<div class='card-image waves-effect waves-block waves-light'><img class='activator' src='static/Mainapp/images/pastel_sky.jpg'></div>"
+                + "<div class='card-content'><span class='card-title activator grey-text text-darken-4'>" + data.diaryEntry[i].Eventname + "<i class='material-icons right'>More info</i></span></div>"
+                + "<div class='card-action'><a class='DeleteButton btn purple lighten-4 right' id=" + data.diaryEntry[i].id + "> Delete </a><a class='UpdateButton btn purple lighten-4' id=" + data.diaryEntry[i].id + "> Update </a></div>"
+                + "<div class='card-reveal'><span class='card-title grey-text text-darken-4'>" + data.diaryEntry[i].Eventname + "<i class='material-icons right'>close</i></span>"
+                + "<p><br><br>Description:" + data.diaryEntry[i].desc + "<br>Location:" + data.diaryEntry[i].Location + "<br>Date:" + data.diaryEntry[i].Date +  "<br>Image:" + data.diaryEntry[i].Image + "<br>Rating:"
+							  + data.diaryEntry[i].Rating + "<br>Review:" + data.diaryEntry[i].Review + "</p></div></div>")
+          }
+
+
+        $('.UpdateButton').click(function(){
+              var iddd = $(this).attr('id')
+              $(function(){
+                  for(var k = 0 ; k<data.diaryEntry.length; k++){
+                     if(iddd==data.diaryEntry[k].id){
+                       list_id = k
+                       eventname = data.diaryEntry[k].Eventname
+                       desc = data.diaryEntry[k].desc
+                       local = data.diaryEntry[k].Location
+                     }
+                  }
+
+
+              })
+
+
+              $('#update_event_name').val(eventname)
+              $('#update_desc').val(desc)
+              $('#update_Location').val(local)
+
+              $('#UpdateButtonSubmit').click(function(){
+                  updatedDiary = $('#update_Diary').serializeArray()
+                  updatedDiary.push({name: 'id', value: data.diaryEntry[list_id].id})
+                  console.log(updatedDiary)
+                  $.ajax({
+                      url: "{% url 'UpdateDiary' %}",
+                      type: "PUT",
+                      data: updatedDiary,
+                      dataType: "json",
+                      beforeSend: function (xhr) {
+                      xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token}}');
+                      },
+                      success: function(data){
+                        alert('Yayy, you have updated ');
+                      }
+                  })
+              })//END BUTTON SUBMIT
+        })//END UPDATE BUTTON
+
+        $('.DeleteButton').click(function(){
+      console.log($(this).attr("id"))
+      console.log("hi imhere ")
+      $.ajax({
+              url: "{% url 'DeleteDiary' %}",
+              data: $(this).attr("id"),
+              type: 'DELETE',
+              dataType: "json",
+              beforeSend: function (xhr) {
+              xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token}}');
+              },
+              success: function(data){
+                  console.log("Data");
+                   console.log(data)
+                   $('#'+data.values+'').remove()
+              }
+      })
+    })//END DELETE
+      }//END SUCCESS
+      })//END GET
+
+    })
+
+
+  </script>
+
+
+</body>
+
+<script type="text/javascript" src="js/materialize.min.js"></script>
+</html>

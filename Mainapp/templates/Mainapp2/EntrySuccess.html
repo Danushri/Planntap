@@ -1,0 +1,43 @@
+{% extends "Mainapp2/base.html" %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/EntrySuccess.css'%}">
+
+<div class="container">
+<div class="EntrySuccessContainer" style = margin: 50px>
+
+<h1>Successful Entry Made </h1>
+     <p>You have made a successful entry :) </p>
+     <br>
+
+     <h5> Would you like to share your experience?</h5>
+    <br>
+        <button  id="TwitterButtonPost" class="btn blue lighten-3" >Twitter
+            <i class="fa fa-twitter"></i>
+        </button>
+
+        <br>
+        <br>
+        <!-- <button  id="GoogleButtonPost" class="btn red lighten-3" >Google Review <i class="fa fa-google"></i></button> -->
+
+
+      <br>
+
+</div>
+
+</div>
+
+<script>
+
+  $("#TwitterButtonPost").on('click', function () {
+          var twitter_share_url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent("I just went to: {{Eventname}} \n This is what happened: {{desc}} \nPosted using Planntap")
+
+          // console.log("ok sending to...",   twitter_share_url   )
+          // location.href = twitter_share_url
+          window.open(twitter_share_url, '_blank')
+      })
+
+</script>
+
+{% endblock %}

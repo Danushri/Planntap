@@ -1,0 +1,69 @@
+{% extends "Mainapp2/base.html" %}
+
+{% block content %}
+<style>
+
+/* .diaryList {
+
+  background-color: #E6E6FA;
+  border-radius: 20px;
+  padding: 20px;
+  padding-left: 50px;
+} */
+</style>
+<div class="container">
+<div class = "flow-text">
+
+  <h1>Welcome (◕‿◕✿)</h1>
+</div>
+<div>
+
+<ul class="diaryList"></ul>
+
+
+</div>
+<div class="container4">
+        <form id="update_Diary">
+          {% csrf_token %}
+                  <legend> Update Diary </legend>
+                  <br>
+                  Event name:<br>
+                  <input type="text" name="update_event_name" id="update_event_name">
+                  <br>
+                <div class="input-field col s12">
+                  <p for="update_desc">Description</p>
+                  <input type="text" name="" value="" id="update_desc" class="materialize-textarea" name="update_desc"></input>
+
+                </div>
+                  <!-- Description:<br>
+                  <input type="TextField" name="update_desc" id="update_desc"> -->
+                  <br>
+                  Location:<br>
+                  <input type="text" name="update_Location" id='update_Location'>
+                  <br>
+                  <br>
+                  Date:<br>
+                  <input type="text" name="update_Date" id='update_Date'>
+                  <br>
+                  <br>
+                  Rating:<br>
+                  <input type="text" name="update_Rating" id='update_Rating'>
+                  <br>
+                  <br>
+                  Review:<br>
+                  <input type="text" name="update_Review" id='update_Review'>
+                  <br>
+            <br><br>
+            <button id="UpdateButtonSubmit" type ="submit" class="waves-effect waves-light deep-purple lighten-4 btn left"> Update</button>
+            <br><br>
+            <br>
+      </form>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}
