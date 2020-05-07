@@ -9,7 +9,7 @@ class Diary(models.Model):
     desc = models.TextField(max_length = 2000, null=True)
     Location = models.CharField(max_length=200, null=True)
     Date = models.DateField(null=True)
-    Image = models.ImageField(upload_to = 'static/Mainapp/images', default = 'static/Mainapp/images/sakura.jpg') #specify size later
+    Image = models.ImageField(default = 'static/Mainapp/images/sakura.jpg') #specify size later
     Rating = models.PositiveIntegerField(null=True)
     Review = models.TextField(max_length = 2000, null=True)
 

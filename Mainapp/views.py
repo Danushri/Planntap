@@ -9,9 +9,6 @@ from django.core.serializers import serialize
 from django.contrib.auth.models import User
 
 
-
-
-
 class AddDiaryView (TemplateView): #inherits from TemplateView built into django
     template_name = 'Mainapp2/addDiary.html'
 
@@ -26,16 +23,18 @@ class AddDiaryView (TemplateView): #inherits from TemplateView built into django
         return render(request, self.template_name, args )
 
     def post (self, request):
-        formRes = Index_form(request.POST)
+        formRes = Index_form(request.POST, request.FILES)
         print(formRes)
         if formRes.is_valid ():
-            print(request.POST['image'])
+            # print(request.POST['image'])
             post = formRes.save(commit = False)
             post.member = request.user
-            post.Image = 'static/Mainapp/images/' + request.POST['image']
 
-            post.save()
+            post.save() #save image in folder
+            post.Image = 'static/Mainapp/images/' + str(formRes.cleaned_data['Image'])
+            post.save() #save the correct location of image
             form = Index_form()
+
             args = {
             'Eventname' : formRes.cleaned_data['Eventname'],
             'desc' : formRes.cleaned_data['desc'],
@@ -53,57 +52,14 @@ class AddDiaryView (TemplateView): #inherits from TemplateView built into django
 
         return render(request, self.template_name, args)
 
-class GooglePlaces(object):
-    def __init__(self, apiKey):
-        super(GooglePlaces, self).__init__()
-        self.apiKey = apiKey
 
-    def search_places_by_coordinate(self, location, radius, types):
-        endpoint_url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
-        places = []
-        params = {
-            'location': location,
-            'radius': radius,
-            'types': types,
-            'key': self.apiKey
-        }
-        res = request.get(endpoint_url, params = params)
-        results =  json.loads(res.content)
-        places.extend(results['results'])
-        time.sleep(2)
-        while "next_page_token" in results:
-            params['pagetoken'] = results['next_page_token'],
-            res = request.get(endpoint_url, params = params)
-            results = json.loads(res.content)
-            places.extend(results['results'])
-            time.sleep(2)
-        return places
-
-    def get_place_details(self, place_id, fields):
-        endpoint_url = "https://maps.googleapis.com/maps/api/place/details/json"
-        params = {
-            'placeid': place_id,
-            'fields': ",".join(fields),
-            'key': self.apiKey
-        }
-        res = request.get(endpoint_url, params = params)
-        place_details =  json.loads(res.content)
-        return place_details
 
 
 def EntrySuccess (request):
 
     return render(request, 'Mainapp2/EntrySuccess.html')
 
-#def index(request):
-#    return render(request,'Mainapp2/index.html' )
 
-# def welcome (request):
-#     if request.user.is_authenticated:
-#         return redirect('homepage')
-#
-#     else:
-#         return render (request, 'welcomepage')
 
 def index(request):
 
@@ -283,25 +239,17 @@ def deleteDiary (request):
         Http404(request)
 
 def updateDiary(request):
-    list1 = list(request)
-    stringed = str(list1)
+
     UpdateDict = QueryDict(request.body)
     Diary_id = UpdateDict.get('id')
     diaryUpdate = Diary.objects.get(pk=Diary_id)
-    print('diary instance')
     diaryUpdate.Eventname = UpdateDict.get('update_event_name')
-    print('eventname')
     diaryUpdate.desc = UpdateDict.get('update_desc')
-    print('desc')
     diaryUpdate.Location = UpdateDict.get('update_Location')
-    print('update')
     diaryUpdate.Date = UpdateDict.get('update_Date')
-    print(UpdateDict.get('update_Date'))
     diaryUpdate.Rating = UpdateDict.get('update_Rating')
-    print(UpdateDict.get('update_Rating'))
     diaryUpdate.Review = UpdateDict.get('update_Review')
     diaryUpdate.save()
-    print('saved')
     return JsonResponse({
         'update' : 'Updated'
     })

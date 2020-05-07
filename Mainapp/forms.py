@@ -10,7 +10,7 @@ class Index_form(forms.ModelForm):
 
     class Meta:
         model = Diary
-        fields = ('Eventname', 'desc', 'Location','Date', 'Rating', 'Review')
+        fields = ('Eventname', 'desc', 'Location','Date', 'Rating', 'Review', 'Image')
 
 
 
