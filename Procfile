@@ -1,1 +1,1 @@
-web: gunicorn Planntap.wsgi --log-file
+web: gunicorn Planntap.wsgi --log-file -
