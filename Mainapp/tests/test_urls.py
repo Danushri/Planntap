@@ -6,7 +6,7 @@ class TestUrls(SimpleTestCase):
 
     def test_index_url_is_resolved(self):
         url = reverse('index')
-        # print(resolve(url))
+        print(resolve(url))
         self.assertEquals(resolve(url).func, index)
 
 
@@ -68,7 +68,7 @@ class TestUrls(SimpleTestCase):
 
 
     def test_facebookEvents_url_is_resolved(self):
-        url = reverse('facebookEvent')
+        url = reverse('facebook')
         # print(resolve(url))
         self.assertEquals(resolve(url).func, facebookEvent)
 

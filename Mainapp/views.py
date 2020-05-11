@@ -30,7 +30,7 @@ class AddDiaryView (TemplateView): #inherits from TemplateView built into django
             post = formRes.save(commit = False)
             post.member = request.user
 
-            post.save() #save image in folder
+            post.save() #save image to directory
             post.Image = 'static/Mainapp/images/' + str(formRes.cleaned_data['Image'])
             post.save() #save the correct location of image
             form = Index_form()
@@ -93,7 +93,8 @@ def register (request):
             message = "Thanks for registering"
             from_email = "DanushriWeb@gmail.com"
             recipient_list= [form.cleaned_data["email"]]
-            send_mail(subject=subject, message=message, from_email=from_email, recipient_list=recipient_list, fail_silently=False)
+            send_mail(subject=subject, message=message, from_email=from_email,
+            recipient_list=recipient_list, fail_silently=False)
             return redirect('index')
         else:
             print('Form Failed')
@@ -200,7 +201,8 @@ def RandomButton(request):
 
     gmaps = googlemaps.Client(key=API_KEY)
 
-    places_result = gmaps.places_nearby(location='51.5228196814,-0.0430759562', radius=2000, open_now=True, type = 'cafe')
+    places_result = gmaps.places_nearby(location='51.5228196814,-0.0430759562', radius=2000,
+    open_now=True, type = 'cafe')
     all_places = places_result.get('results')
     arr = []
     for i in all_places:
@@ -260,7 +262,8 @@ import sys
 def twitter(request):
     print('My name is Danushri')
     auth = tweepy.OAuthHandler('ypwCWnoUVmTrNiTjMujzpOvh7', '8IU2ZWDwf6aPra7sRrxBNpkVW71pItgGI6HAiIcBPZ8JrAarnQ')
-    auth.set_access_token('1233854503616745472-N1CSQimnLcbRaOKM6Wwrl2PLo1CLd1', 'hrFPXQN2CGAxhC1a8IxVosgDehxgJhByH5biCMd7BWhbS')
+    auth.set_access_token('1233854503616745472-N1CSQimnLcbRaOKM6Wwrl2PLo1CLd1',
+    'hrFPXQN2CGAxhC1a8IxVosgDehxgJhByH5biCMd7BWhbS')
     api = tweepy.API(auth)
 
     public_tweets=api.home_timeline()
