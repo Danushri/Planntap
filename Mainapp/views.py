@@ -170,10 +170,6 @@ def facebookEvent(request):
 
 
 
-
-
-    print(events['1693565647448194'])
-    test = "Danushri"
     ctr = 0
     for event in events :
         eventsArray.append(events[event_ids[ctr]])
@@ -185,7 +181,6 @@ def facebookEvent(request):
     context = {
 
         'events':eventsArray,
-        # 'event':test
         'ids':event_ids
     }
 
@@ -211,9 +206,6 @@ def RandomButton(request):
     randomNum = random.randint(0,length-1)
     place = arr[randomNum]
     print(place)
-
-
-
 
     return JsonResponse({
         'place' : place,

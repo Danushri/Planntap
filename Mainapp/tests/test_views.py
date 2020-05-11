@@ -15,5 +15,3 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'Mainapp2/index.html')
-
-    # def test_diary_POST(self):
